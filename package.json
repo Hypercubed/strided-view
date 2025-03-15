@@ -1,0 +1,44 @@
+{
+  "name": "strided-view",
+  "version": "1.0.0",
+  "main": "./dist/index.js",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
+  "files": [
+    "dist",
+    "src/index.ts"
+  ],
+  "scripts": {
+    "start": "esrun index.ts",
+    "docs": "tsdoc --src=./src/index.ts --dest=./API.md",
+    "build": "tsup",
+    "test": "vitest run --typecheck",
+    "watch": "vitest watch --typecheck",
+    "clean": "rm -rf lib",
+    "check": "run-s check:*",
+    "check:tsc": "tsc --noEmit",
+    "check:prettier": "prettier --check .",
+    "check:eslint": "eslint ./src/*.ts",
+    "fix": "run-s fix:*",
+    "fix:prettier": "prettier --write .",
+    "fix:eslint": "eslint ./src/*.ts --fix",
+    "prepublishOnly": "run-s check test docs clean build"
+  },
+  "author": "J. Harshbarger",
+  "license": "MIT",
+  "description": "StridedView is a library for creating and manipulating 2-dimensional arrays in JavaScript/TypeScript.",
+  "devDependencies": {
+    "eslint": "^9.22.0",
+    "esrun": "^3.2.26",
+    "globals": "^16.0.0",
+    "got": "^14.4.6",
+    "jimp": "^1.6.0",
+    "npm-run-all": "^4.1.5",
+    "prettier": "3.5.3",
+    "tsdoc-markdown": "^1.1.1",
+    "tsup": "^8.4.0",
+    "typescript": "^5.8.2",
+    "typescript-eslint": "^8.26.0",
+    "vitest": "^3.0.8"
+  }
+}
