@@ -333,9 +333,17 @@ Parameters:
 
 #### :gear: findNeighborIndices
 
+Find the indices of the neighbors of a given position
+
 | Method | Type |
 | ---------- | ---------- |
 | `findNeighborIndices` | `([x, y]: [number, number], topology?: Topology) => [number, number][]` |
+
+Parameters:
+
+* `pos`: - The position to find the neighbors of
+* `topology`: - The topology of the neighborhood (4 or 8)
+
 
 #### :gear: flat
 

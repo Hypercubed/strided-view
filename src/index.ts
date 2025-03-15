@@ -553,6 +553,13 @@ export class StridedView<T> {
     return this.slice([x0, y0], [x1 - x0, y1 - y0]);
   }
 
+  /**
+   * Find the indices of the neighbors of a given position
+   * 
+   * @param pos - The position to find the neighbors of
+   * @param topology - The topology of the neighborhood (4 or 8)
+   * @returns - The indices of the neighbors
+   */
   findNeighborIndices([x, y]: [number, number], topology: Topology = 8) {
     const neighbors: [number, number][] = [];
     if (x > 0) neighbors.push([x - 1, y]);

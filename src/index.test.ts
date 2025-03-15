@@ -1062,6 +1062,26 @@ describe('neighborhood', () => {
   });
 });
 
+describe('findNeighborIndices', () => {
+  test('findNeighborIndices', () => {
+    const a = StridedView.of([], [5, 5]);
+    const b = a.findNeighborIndices([1, 1]);
+    expect(JSON.stringify(b)).toMatchInlineSnapshot(`"[[0,1],[2,1],[1,0],[1,2],[0,0],[2,0],[0,2],[2,2]]"`);
+  });
+
+  test('findNeighborIndices with topology', () => {
+    const a = StridedView.of([], [5, 5]);
+    const b = a.findNeighborIndices([1, 1], 4);
+    expect(JSON.stringify(b)).toMatchInlineSnapshot(`"[[0,1],[2,1],[1,0],[1,2]]"`);
+  });
+
+  test('findNeighborIndices near edge', () => {
+    const a = StridedView.of([], [5, 5]);
+    const b = a.findNeighborIndices([0, 5]);
+    expect(JSON.stringify(b)).toMatchInlineSnapshot(`"[[1,5],[0,4],[1,4]]"`);
+  });
+});
+
 describe('flat', () => {
   test('flat', () => {
     const a = StridedView.of(A6, [2, 3]);
