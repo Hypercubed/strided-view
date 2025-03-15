@@ -1252,6 +1252,126 @@ describe('findIndex/findIndices', () => {
     expect(a.findIndices(v => v === 10)).toMatchInlineSnapshot(`[]`);
   });
 });
+;
+
+describe('forEach', () => {
+  test('forEach', () => {
+    const a = StridedView.of(A6, [2, 3]);
+    const b: number[] = [];
+    a.forEach(v => b.push(v));
+    expect(b).toEqual([1, 2, 3, 4, 5, 6]);
+  });
+
+  test('forEach with index', () => {
+    const a = StridedView.of(A6, [2, 3]);
+    const b: number[] = [];
+    a.forEach((_, [x, y]) => b.push(x + y));
+    expect(b).toEqual([0, 1, 1, 2, 2, 3]);
+  });
+});
+
+describe('iter', () => {
+  test('iter', () => {
+    const a = StridedView.of(A6, [2, 3]);
+    const b = [...a];
+    expect(b).toEqual([1, 2, 3, 4, 5, 6]);
+  });
+
+  test('entries', () => {
+    const a = StridedView.of(A6, [2, 3]);
+    expect(JSON.stringify([...a.entries()])).toMatchInlineSnapshot(`"[[1,[0,0]],[2,[1,0]],[3,[0,1]],[4,[1,1]],[5,[0,2]],[6,[1,2]]]"`);
+  });
+
+  test('values', () => {
+    const a = StridedView.of(A6, [2, 3]);
+    expect(JSON.stringify([...a.values()])).toMatchInlineSnapshot(`"[1,2,3,4,5,6]"`);
+  });
+
+  test('keys', () => {
+    const a = StridedView.of(A6, [2, 3]);
+    expect(JSON.stringify([...a.keys()])).toMatchInlineSnapshot(`"[[0,0],[1,0],[0,1],[1,1],[0,2],[1,2]]"`);
+  });
+});
+
+describe('combine', () => {
+  test('combine', () => {
+    const a = StridedView.of(S6, [2, 3]);
+    const b = StridedView.of(S6, [2, 3]);
+    expect(StridedView.combine([[a, b]]).toString()).toMatchInlineSnapshot(`
+      "A,B,A,B
+      C,D,C,D
+      E,F,E,F"
+    `);
+    expect(StridedView.combine([[a], [b]]).toString()).toMatchInlineSnapshot(`
+      "A,B
+      C,D
+      E,F
+      A,B
+      C,D
+      E,F"
+    `);
+    expect(StridedView.combine([[a, b], [b, a]]).toString()).toMatchInlineSnapshot(`
+      "A,B,A,B
+      C,D,C,D
+      E,F,E,F
+      A,B,A,B
+      C,D,C,D
+      E,F,E,F"
+    `);
+  });
+
+  test('combine different sizes', () => {
+    const a = StridedView.of(S6, [6, 1]);
+    const b = StridedView.of(S12, [6, 2]);
+    expect(StridedView.combine([
+      [a],
+      [b]
+    ]).toString()).toMatchInlineSnapshot(`
+      "A,B,C,D,E,F
+      A,B,C,D,E,F
+      G,H,I,J,K,L"
+    `);
+
+    expect(() => StridedView.combine([[a,b]])).toThrow('Invalid shape');
+  });
+
+  test('concat', () => {
+    const a = StridedView.of(S6, [1, 6]);
+    const b = StridedView.of(S12, [2, 6]);
+    expect(a.concat(b).toString()).toMatchInlineSnapshot(`
+      "A,A,B
+      B,C,D
+      C,E,F
+      D,G,H
+      E,I,J
+      F,K,L"
+    `);
+  });
+
+  test('stack', () => {
+    const a = StridedView.of(S6, [3, 2]);
+    const b = StridedView.of(S9, [3, 3]);
+    expect(a.stack(b).toString()).toMatchInlineSnapshot(`
+      "A,B,C
+      D,E,F
+      A,B,C
+      D,E,F
+      G,H,I"
+    `);
+  });
+
+  test('tile', () => {
+    const a = StridedView.of(S6, [2, 3]);
+    expect(a.tile([3, 2]).toString()).toMatchInlineSnapshot(`
+      "A,B,A,B,A,B
+      C,D,C,D,C,D
+      E,F,E,F,E,F
+      A,B,A,B,A,B
+      C,D,C,D,C,D
+      E,F,E,F,E,F"
+    `);
+  })
+});
 
 describe('stress tests', () => {
   const sx = 30;
@@ -1317,43 +1437,4 @@ describe('stress tests', () => {
     expect(a.rotate90()).toEqual(a.copy().rotate90());
     expect(a.rotate90().rotate90().rotate90().rotate90()).toEqual(a);
   });
-});
-
-describe('forEach', () => {
-  test('forEach', () => {
-    const a = StridedView.of(A6, [2, 3]);
-    const b: number[] = [];
-    a.forEach(v => b.push(v));
-    expect(b).toEqual([1, 2, 3, 4, 5, 6]);
-  });
-
-  test('forEach with index', () => {
-    const a = StridedView.of(A6, [2, 3]);
-    const b: number[] = [];
-    a.forEach((_, [x, y]) => b.push(x + y));
-    expect(b).toEqual([0, 1, 1, 2, 2, 3]);
-  });
-});
-
-describe('iter', () => {
-  test('iter', () => {
-    const a = StridedView.of(A6, [2, 3]);
-    const b = [...a];
-    expect(b).toEqual([1, 2, 3, 4, 5, 6]);
-  });
-
-  test('entries', () => {
-    const a = StridedView.of(A6, [2, 3]);
-    expect(JSON.stringify([...a.entries()])).toMatchInlineSnapshot(`"[[1,[0,0]],[2,[1,0]],[3,[0,1]],[4,[1,1]],[5,[0,2]],[6,[1,2]]]"`);
-  });
-
-  test('values', () => {
-    const a = StridedView.of(A6, [2, 3]);
-    expect(JSON.stringify([...a.values()])).toMatchInlineSnapshot(`"[1,2,3,4,5,6]"`);
-  });
-
-  test('keys', () => {
-    const a = StridedView.of(A6, [2, 3]);
-    expect(JSON.stringify([...a.keys()])).toMatchInlineSnapshot(`"[[0,0],[1,0],[0,1],[1,1],[0,2],[1,2]]"`);
-  });
-});
+})

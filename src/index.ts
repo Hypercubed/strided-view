@@ -677,6 +677,12 @@ export class StridedView<T> {
     return indecies;
   }
 
+  /**
+   * 
+   * @param k - The number of elements to sample
+   * @param callbackFn - The function to execute on each element, returning whether to include the element in the sample
+   * @returns - The indices of the sampled elements
+   */
   sample(k = 1, callbackFn?: MapCallback<T, boolean>) {
     const indecies = this.findIndices(callbackFn);
 
@@ -686,6 +692,36 @@ export class StridedView<T> {
       [indecies[i], indecies[j]] = [indecies[j], indecies[i]];
     }
     return indecies.slice(0, k);
+  }
+
+  /**
+   * 
+   * @param view - The view to stack
+   * @returns - A view of the two views stacked on top of each other
+   */
+  stack(view: StridedView<T>): StridedView<T> {
+    return StridedView.combine([[this], [view]]);
+  }
+
+  /**
+   * 
+   * @param view - The view to concatenate
+   * @returns - A view of the two views concatenated
+   */
+  concat(view: StridedView<T>): StridedView<T> {
+    return StridedView.combine([[this, view]]);
+  }
+
+  /**
+   * 
+   * @param p - The shape of the tiling
+   * @returns - A new view tiled with the given shape
+   */
+  tile([nx, ny]: [number, number]): StridedView<T> {
+    const views = Array.from({ length: ny }, () =>
+      Array.from({ length: nx }, () => this)
+    );
+    return StridedView.combine(views);
   }
 
   /**
@@ -913,6 +949,42 @@ export class StridedView<T> {
    */
   static empty<T>(shape: [number, number]): StridedView<T> {
     return new StridedView<T>([], shape);
+  }
+
+  /**
+   * 
+   * @param views - The views to combine
+   * @returns - A new view with the views combined
+   */
+  static combine<T>(views: StridedView<T>[][]): StridedView<T> {
+    const widths = views[0].map((view) => view.shape[0]);
+    const heights = views.map((row) => row[0].shape[1]);
+
+    const width = widths.reduce((acc, v) => acc + v, 0);
+    const height = heights.reduce((acc, v) => acc + v, 0);
+
+    const result = new StridedView<T>(Array(width * height), [width, height]);
+
+    let yy = 0;
+    for (let y = 0; y < views.length; y++) {
+      let xx = 0;
+      for (let x = 0; x < views[y].length; x++) {
+        const view = views[y][x];
+        if (view.shape[0] !== widths[x]) {
+          throw new RangeError('Invalid shape');
+        }
+        if (view.shape[1] !== heights[y]) {
+          throw new RangeError('Invalid shape');
+        }
+        view.forEach((value, [dx, dy]) => {
+          result.set(dx + xx, dy + yy, value);
+        });
+
+        xx += widths[x];
+      }
+      yy += heights[y];
+    }
+    return result;
   }
 
   /**
