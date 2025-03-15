@@ -6,6 +6,7 @@
 - (feature) Add iterator and entries, values, keys
 - (feature) Add inspect
 - (feature) Add combine
+* (feature) Static constructors use Float64Array when possible
 
 ---
 

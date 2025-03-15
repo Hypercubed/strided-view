@@ -1398,7 +1398,10 @@ describe('stress tests', () => {
   });
 
   test('strides vs copy', () => {
-    expect(a).toEqual(a.copy());
+    expect(a.shape).toEqual(a.copy().shape);
+    expect(a.stride).toEqual(a.copy().stride);
+    expect(a.offset).toEqual(a.copy().offset);
+    expect(a !== a.copy());
     expect(a.toArrays()).toEqual(a.copy().toArrays());
     expect(a.toArray()).toEqual(a.copy().toArray());
   });
@@ -1408,7 +1411,7 @@ describe('stress tests', () => {
   });
 
   test('flip/transpose', () => {
-    expect(a.transpose()).toEqual(a.copy().transpose());
+    expect(a.transpose().toArray()).toEqual(a.copy().transpose().toArray());
     expect(a.transpose().flip().toArrays()).toEqual(
       a.transpose().copy().flip().toArrays()
     );
@@ -1422,8 +1425,8 @@ describe('stress tests', () => {
   });
 
   test('reshape', () => {
-    expect(a.reshape([sy, sx])).toEqual(a.copy().reshape([sy, sx]));
-    expect(a.reshape([sy, sx]).copy().reshape([sx, sy])).toEqual(a);
+    expect(a.reshape([sy, sx]).toArray()).toEqual(a.copy().reshape([sy, sx]).toArray());
+    expect(a.reshape([sy, sx]).copy().reshape([sx, sy]).toArray()).toEqual(a.toArray());
 
     expect(a.transpose().reshape([sy, sx]).toArrays()).toEqual(
       a.transpose().copy().reshape([sy, sx]).toArrays()
@@ -1444,7 +1447,7 @@ describe('stress tests', () => {
   });
 
   test('rotate90', () => {
-    expect(a.rotate90()).toEqual(a.copy().rotate90());
-    expect(a.rotate90().rotate90().rotate90().rotate90()).toEqual(a);
+    expect(a.rotate90().toArray()).toEqual(a.copy().rotate90().toArray());
+    expect(a.rotate90().rotate90().rotate90().rotate90().toArray()).toEqual(a.toArray());
   });
 });

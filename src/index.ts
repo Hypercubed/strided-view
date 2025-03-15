@@ -868,13 +868,13 @@ export class StridedView<T> {
     step: number = 1
   ): StridedView<number> {
     const size = shape[0] * shape[1];
-    const data = Array(size);
+    const data = new Float64Array(size);
     let index = -1;
     while (index++ < size) {
       data[index] = start;
       start += step;
     }
-    return new StridedView<number>(data, shape);
+    return new StridedView(data, shape);
   }
 
   /**
@@ -883,7 +883,7 @@ export class StridedView<T> {
    */
   static zeros(shape: [number, number]): StridedView<number> {
     const size = shape[0] * shape[1];
-    return new StridedView<number>(Array(size).fill(0), shape);
+    return new StridedView<number>(new Float64Array(size).fill(0), shape);
   }
 
   /**
@@ -892,7 +892,7 @@ export class StridedView<T> {
    */
   static ones(shape: [number, number]): StridedView<number> {
     const size = shape[0] * shape[1];
-    return new StridedView<number>(Array(size).fill(1), shape);
+    return new StridedView(new Float64Array(size).fill(1), shape);
   }
 
   /**
@@ -900,8 +900,8 @@ export class StridedView<T> {
    * @returns - A view of the identity matrix with the given length
    */
   static identity(length: number): StridedView<number> {
-    const data = Array(length * length);
-    return new StridedView<number>(data, [length, length]).update(
+    const data = new Float64Array(length * length);
+    return new StridedView(data, [length, length]).update(
       (_, [x, y]) => (x === y ? 1 : 0)
     );
   }
@@ -912,8 +912,8 @@ export class StridedView<T> {
    */
   static diagonal(array: number[]): StridedView<number> {
     const length = array.length;
-    const data = Array(length * length);
-    return new StridedView<number>(data, [length, length]).update(
+    const data = new Float64Array(length * length);
+    return new StridedView(data, [length, length]).update(
       (_, [x, y]) => (x === y ? array[x] : 0)
     );
   }
@@ -938,8 +938,10 @@ export class StridedView<T> {
     randFn?: () => number
   ): StridedView<number> {
     const length = shape[0] * shape[1];
-    randFn ??= Math.random;
-    const data = Array.from({ length }).map(randFn);
+    const data = new Float64Array(length).map(() => Math.random());
+    if (randFn) {
+      data.forEach((_, i) => (data[i] = randFn!()));
+    }
     return new StridedView<number>(data, shape);
   }
 
