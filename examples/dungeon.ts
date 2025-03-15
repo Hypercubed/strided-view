@@ -165,8 +165,11 @@ function placeRoom(room: Room) {
     function next() {
       field = field.map((c, [x, y]) => {
         const neighborhood = field.findNeighborIndices([x, y]);
-        const n = neighborhood.reduce((acc, [x, y]) => (field.get(x, y) ? acc + 1 : acc), 0);
-    
+        const n = neighborhood.reduce(
+          (acc, [x, y]) => (field.get(x, y) ? acc + 1 : acc),
+          0
+        );
+
         if (c) {
           if (survive.includes(n)) return 1;
         } else {

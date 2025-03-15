@@ -1107,13 +1107,17 @@ describe('findNeighborIndices', () => {
   test('findNeighborIndices', () => {
     const a = StridedView.of([], [5, 5]);
     const b = a.findNeighborIndices([1, 1]);
-    expect(JSON.stringify(b)).toMatchInlineSnapshot(`"[[0,1],[2,1],[1,0],[1,2],[0,0],[2,0],[0,2],[2,2]]"`);
+    expect(JSON.stringify(b)).toMatchInlineSnapshot(
+      `"[[0,1],[2,1],[1,0],[1,2],[0,0],[2,0],[0,2],[2,2]]"`
+    );
   });
 
   test('findNeighborIndices with topology', () => {
     const a = StridedView.of([], [5, 5]);
     const b = a.findNeighborIndices([1, 1], 4);
-    expect(JSON.stringify(b)).toMatchInlineSnapshot(`"[[0,1],[2,1],[1,0],[1,2]]"`);
+    expect(JSON.stringify(b)).toMatchInlineSnapshot(
+      `"[[0,1],[2,1],[1,0],[1,2]]"`
+    );
   });
 
   test('findNeighborIndices near edge', () => {
@@ -1252,8 +1256,6 @@ describe('findIndex/findIndices', () => {
     expect(a.findIndices(v => v === 10)).toMatchInlineSnapshot(`[]`);
   });
 });
-;
-
 describe('forEach', () => {
   test('forEach', () => {
     const a = StridedView.of(A6, [2, 3]);
@@ -1279,17 +1281,23 @@ describe('iter', () => {
 
   test('entries', () => {
     const a = StridedView.of(A6, [2, 3]);
-    expect(JSON.stringify([...a.entries()])).toMatchInlineSnapshot(`"[[1,[0,0]],[2,[1,0]],[3,[0,1]],[4,[1,1]],[5,[0,2]],[6,[1,2]]]"`);
+    expect(JSON.stringify([...a.entries()])).toMatchInlineSnapshot(
+      `"[[1,[0,0]],[2,[1,0]],[3,[0,1]],[4,[1,1]],[5,[0,2]],[6,[1,2]]]"`
+    );
   });
 
   test('values', () => {
     const a = StridedView.of(A6, [2, 3]);
-    expect(JSON.stringify([...a.values()])).toMatchInlineSnapshot(`"[1,2,3,4,5,6]"`);
+    expect(JSON.stringify([...a.values()])).toMatchInlineSnapshot(
+      `"[1,2,3,4,5,6]"`
+    );
   });
 
   test('keys', () => {
     const a = StridedView.of(A6, [2, 3]);
-    expect(JSON.stringify([...a.keys()])).toMatchInlineSnapshot(`"[[0,0],[1,0],[0,1],[1,1],[0,2],[1,2]]"`);
+    expect(JSON.stringify([...a.keys()])).toMatchInlineSnapshot(
+      `"[[0,0],[1,0],[0,1],[1,1],[0,2],[1,2]]"`
+    );
   });
 });
 
@@ -1310,7 +1318,12 @@ describe('combine', () => {
       C,D
       E,F"
     `);
-    expect(StridedView.combine([[a, b], [b, a]]).toString()).toMatchInlineSnapshot(`
+    expect(
+      StridedView.combine([
+        [a, b],
+        [b, a]
+      ]).toString()
+    ).toMatchInlineSnapshot(`
       "A,B,A,B
       C,D,C,D
       E,F,E,F
@@ -1323,16 +1336,13 @@ describe('combine', () => {
   test('combine different sizes', () => {
     const a = StridedView.of(S6, [6, 1]);
     const b = StridedView.of(S12, [6, 2]);
-    expect(StridedView.combine([
-      [a],
-      [b]
-    ]).toString()).toMatchInlineSnapshot(`
+    expect(StridedView.combine([[a], [b]]).toString()).toMatchInlineSnapshot(`
       "A,B,C,D,E,F
       A,B,C,D,E,F
       G,H,I,J,K,L"
     `);
 
-    expect(() => StridedView.combine([[a,b]])).toThrow('Invalid shape');
+    expect(() => StridedView.combine([[a, b]])).toThrow('Invalid shape');
   });
 
   test('concat', () => {
@@ -1370,7 +1380,7 @@ describe('combine', () => {
       C,D,C,D,C,D
       E,F,E,F,E,F"
     `);
-  })
+  });
 });
 
 describe('stress tests', () => {
@@ -1437,4 +1447,4 @@ describe('stress tests', () => {
     expect(a.rotate90()).toEqual(a.copy().rotate90());
     expect(a.rotate90().rotate90().rotate90().rotate90()).toEqual(a);
   });
-})
+});

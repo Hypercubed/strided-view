@@ -555,7 +555,7 @@ export class StridedView<T> {
 
   /**
    * Find the indices of the neighbors of a given position
-   * 
+   *
    * @param pos - The position to find the neighbors of
    * @param topology - The topology of the neighborhood (4 or 8)
    * @returns - The indices of the neighbors
@@ -678,7 +678,7 @@ export class StridedView<T> {
   }
 
   /**
-   * 
+   *
    * @param k - The number of elements to sample
    * @param callbackFn - The function to execute on each element, returning whether to include the element in the sample
    * @returns - The indices of the sampled elements
@@ -695,7 +695,7 @@ export class StridedView<T> {
   }
 
   /**
-   * 
+   *
    * @param view - The view to stack
    * @returns - A view of the two views stacked on top of each other
    */
@@ -704,7 +704,7 @@ export class StridedView<T> {
   }
 
   /**
-   * 
+   *
    * @param view - The view to concatenate
    * @returns - A view of the two views concatenated
    */
@@ -713,7 +713,7 @@ export class StridedView<T> {
   }
 
   /**
-   * 
+   *
    * @param p - The shape of the tiling
    * @returns - A new view tiled with the given shape
    */
@@ -952,13 +952,13 @@ export class StridedView<T> {
   }
 
   /**
-   * 
+   *
    * @param views - The views to combine
    * @returns - A new view with the views combined
    */
   static combine<T>(views: StridedView<T>[][]): StridedView<T> {
-    const widths = views[0].map((view) => view.shape[0]);
-    const heights = views.map((row) => row[0].shape[1]);
+    const widths = views[0].map(view => view.shape[0]);
+    const heights = views.map(row => row[0].shape[1]);
 
     const width = widths.reduce((acc, v) => acc + v, 0);
     const height = heights.reduce((acc, v) => acc + v, 0);

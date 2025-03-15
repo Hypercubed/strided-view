@@ -50,9 +50,13 @@ Parameters:
 - [findIndex](#gear-findindex)
 - [findIndices](#gear-findindices)
 - [sample](#gear-sample)
+- [stack](#gear-stack)
+- [concat](#gear-concat)
+- [tile](#gear-tile)
 - [serialize](#gear-serialize)
 - [toString](#gear-tostring)
 - [join](#gear-join)
+- [inspect](#gear-inspect)
 - [toArrays](#gear-toarrays)
 - [toArray](#gear-toarray)
 - [of](#gear-of)
@@ -65,6 +69,7 @@ Parameters:
 - [fill](#gear-fill)
 - [random](#gear-random)
 - [empty](#gear-empty)
+- [combine](#gear-combine)
 - [isStridedView](#gear-isstridedview)
 
 #### :gear: get
@@ -418,6 +423,45 @@ Parameters:
 | ---------- | ---------- |
 | `sample` | `(k?: number, callbackFn?: MapCallback<T, boolean> or undefined) => [number, number][]` |
 
+Parameters:
+
+* `k`: - The number of elements to sample
+* `callbackFn`: - The function to execute on each element, returning whether to include the element in the sample
+
+
+#### :gear: stack
+
+| Method | Type |
+| ---------- | ---------- |
+| `stack` | `(view: StridedView<T>) => StridedView<T>` |
+
+Parameters:
+
+* `view`: - The view to stack
+
+
+#### :gear: concat
+
+| Method | Type |
+| ---------- | ---------- |
+| `concat` | `(view: StridedView<T>) => StridedView<T>` |
+
+Parameters:
+
+* `view`: - The view to concatenate
+
+
+#### :gear: tile
+
+| Method | Type |
+| ---------- | ---------- |
+| `tile` | `([nx, ny]: [number, number]) => StridedView<T>` |
+
+Parameters:
+
+* `p`: - The shape of the tiling
+
+
 #### :gear: serialize
 
 | Method | Type |
@@ -441,6 +485,12 @@ Parameters:
 * `colSep`: - The separator between columns (default: ",")
 * `rowSep`: - The separator between rows (default: "\n")
 
+
+#### :gear: inspect
+
+| Method | Type |
+| ---------- | ---------- |
+| `inspect` | `() => string` |
 
 #### :gear: toArrays
 
@@ -563,6 +613,17 @@ Parameters:
 | Method | Type |
 | ---------- | ---------- |
 | `empty` | `<T>(shape: [number, number]) => StridedView<T>` |
+
+#### :gear: combine
+
+| Method | Type |
+| ---------- | ---------- |
+| `combine` | `<T>(views: StridedView<T>[][]) => StridedView<T>` |
+
+Parameters:
+
+* `views`: - The views to combine
+
 
 #### :gear: isStridedView
 
