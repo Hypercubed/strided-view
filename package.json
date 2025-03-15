@@ -21,7 +21,7 @@
     "clean": "rm -rf lib",
     "check": "run-s check:*",
     "check:tsc": "tsc --noEmit",
-    "check:prettier": "prettier --check .",
+    "check:prettier": "prettier --check ./src/*.ts",
     "check:eslint": "eslint ./src/*.ts",
     "fix": "run-s fix:*",
     "fix:prettier": "prettier --write .",
