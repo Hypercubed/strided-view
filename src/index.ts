@@ -825,6 +825,7 @@ export class StridedView<T> {
   // - pick/slice (vs col/row)
   // - filter?
   // - roll
+  // - broadcast
 
   /**
    * ## Static Methods
@@ -980,6 +981,35 @@ export class StridedView<T> {
         xx += widths[x];
       }
       yy += heights[y];
+    }
+    return result;
+  }
+
+  /**
+   * 
+   * @param view1 - The first view to combine elements from
+   * @param view2 - The second view to combine elements from
+   * @param callbackFn - The function to execute on each element, returning the new value
+   * @returns - A new view with the combined values
+   */
+  static cwise<A, B, R>(
+    view1: StridedView<A>,
+    view2: StridedView<B>,
+    callbackFn: (value: A, other: B, pos: [number, number]) => R
+  ): StridedView<R> {
+    const height = view1.shape[1];
+    const width = view1.shape[0];
+
+    if (view2.shape[0] !== width || view2.shape[1] !== height) {
+      throw new RangeError('Invalid shape');
+    }
+
+    const data = new Array<R>(width * height);
+    const result = new StridedView<R>(data, view1.shape);
+    for (let y = 0; y < view1.shape[1]; y++) {
+      for (let x = 0; x < view1.shape[0]; x++) {
+        result.set(x, y, callbackFn(view1.get(x, y)!, view2.get(x, y)!, [x, y]));
+      }
     }
     return result;
   }

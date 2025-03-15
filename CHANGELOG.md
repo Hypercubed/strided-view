@@ -8,6 +8,7 @@
 - (feature) Add `combine`
 * (feature) Static static constructors now use `Float64Array` when possible
 * (feature) `StridedView.random` now generates random values in the range `[0, 1)` passed to the `fill` function
+* (feature) Add `StridedView.cwise`
 
 ---
 
