@@ -3,11 +3,11 @@
 ## HEAD (Unreleased)
 
 - (feature) Add `findNeighborIndices`
-- (feature) Add iterator and entries, values, keys
-- (feature) Add inspect
-- (feature) Add combine
-* (feature) Static constructors use Float64Array when possible
-* (breaking) StridedView#random now accepts a mapper over numbers
+- (feature) Add iterator, `entries`, `values`, and `keys`
+- (feature) Add `inspect`
+- (feature) Add `combine`
+* (feature) Static static constructors now use `Float64Array` when possible
+* (feature) `StridedView.random` now generates random values in the range `[0, 1)` passed to the `fill` function
 
 ---
 

@@ -821,15 +821,10 @@ export class StridedView<T> {
   }
 
   // TODO:
-  // - tile/placeTiled
   // - split
-  // - find
-  // - some
-  // - Symbol.iterator?
   // - pick/slice (vs col/row)
-  // - filter
+  // - filter?
   // - roll
-  // - concat
 
   /**
    * ## Static Methods
