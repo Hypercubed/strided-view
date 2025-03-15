@@ -27,12 +27,14 @@
     "fix:prettier": "prettier --write .",
     "fix:eslint": "eslint ./src/*.ts --fix",
     "prepublishOnly": "run-s build",
-    "release": "np"
+    "release": "np",
+    "version": "chg release -y && git add -A CHANGELOG.md"
   },
   "author": "J. Harshbarger",
   "license": "MIT",
   "description": "StridedView is a library for creating and manipulating 2-dimensional arrays in JavaScript/TypeScript.",
   "devDependencies": {
+    "chg": "^0.4.0",
     "eslint": "^9.22.0",
     "esrun": "^3.2.26",
     "globals": "^16.0.0",

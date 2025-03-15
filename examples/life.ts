@@ -26,9 +26,8 @@ function print() {
 
 function next() {
   field = field.map((c, [x, y]) => {
-    const n = field
-      .neighborhood([x, y])
-      .reduce((acc, v) => (v ? acc + 1 : acc), c ? -1 : 0 /* subtract self */);
+    const neighborhood = field.findNeighborIndices([x, y]);
+    const n = neighborhood.reduce((acc, [x, y]) => (field.get(x, y) ? acc + 1 : acc), 0);
 
     switch (n) {
       case 0:

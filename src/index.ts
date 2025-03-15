@@ -243,7 +243,7 @@ export class StridedView<T> {
       const r = predicate ? predicate(target!, current!) : current === target;
       if (r) {
         this.#set(idx, value);
-        queue.push(...getNeighbors(p, topology));
+        queue.push(...this.findNeighborIndices(p, topology));
       }
     }
     return this;
@@ -510,6 +510,23 @@ export class StridedView<T> {
     const y1 = Math.min(this.shape[1], pos[1] + distance + 1);
 
     return this.slice([x0, y0], [x1 - x0, y1 - y0]);
+  }
+
+  findNeighborIndices([x, y]: [number, number], topology: Topology = 8) {
+    const neighbors: [number, number][] = [];
+    if (x > 0) neighbors.push([x - 1, y]);
+    if (x < this.shape[0] - 1) neighbors.push([x + 1, y]);
+    if (y > 0) neighbors.push([x, y - 1]);
+    if (y < this.shape[1] - 1) neighbors.push([x, y + 1]);
+    if (topology === 8) {
+      if (x > 0 && y > 0) neighbors.push([x - 1, y - 1]);
+      if (x < this.shape[0] - 1 && y > 0) neighbors.push([x + 1, y - 1]);
+      if (x > 0 && y < this.shape[1] - 1) neighbors.push([x - 1, y + 1]);
+      if (x < this.shape[0] - 1 && y < this.shape[1] - 1) {
+        neighbors.push([x + 1, y + 1]);
+      }
+    }
+    return neighbors;
   }
 
   /**
@@ -840,19 +857,4 @@ export class StridedView<T> {
 
   // TODO:
   // - fromAsync??
-}
-
-function getNeighbors([x, y]: [number, number], topology: Topology = 8) {
-  const neighbors: [number, number][] = [];
-  neighbors.push([x - 1, y], [x + 1, y], [x, y - 1], [x, y + 1]);
-  if (topology === 4) {
-  } else if (topology === 8) {
-    neighbors.push(
-      [x - 1, y - 1],
-      [x + 1, y - 1],
-      [x - 1, y + 1],
-      [x + 1, y + 1]
-    );
-  }
-  return neighbors;
 }
