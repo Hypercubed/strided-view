@@ -1,5 +1,7 @@
 // https://github.com/scijs/ndarray/blob/cc45f1447cbd2cbc73a9e7f3d2ac6d800740f15c/lib/viewn.js
 
+import { L } from "vitest/dist/chunks/reporters.66aFHiyX";
+
 type MapCallback<T, R> = (
   value: T,
   pos: [number, number],
@@ -240,12 +242,13 @@ export class StridedView<T> {
     const queue = [pos];
     while (queue.length > 0) {
       const p = queue.pop()!;
-      const current = this.get(...p);
+      const idx = this.index(...p)!;
+      const current = this.#get(idx);
       const r = predicate
         ? predicate(target!, current!)
-        : this.get(...p) === target;
+        : current === target;
       if (r) {
-        this.set(...p, value);
+        this.#set(idx, value);
         queue.push(...getNeighbors(p, topology));
       }
     }
@@ -257,9 +260,11 @@ export class StridedView<T> {
    * @returns - The view
    */
   update(callbackFn: MapCallback<T, T>): this {
-    this.forEach((_, [x, y]) =>
-      this.set(x, y, callbackFn(this.get(x, y)!, [x, y], this))
-    );
+    for (let y = 0; y < this.shape[1]; y++) {
+      for (let x = 0; x < this.shape[0]; x++) {
+        this.set(x, y, callbackFn.call(this, this.get(x, y)!, [x, y], this))
+      }
+    }
     return this;
   }
 
@@ -305,9 +310,13 @@ export class StridedView<T> {
    * @returns - A new view with the mapped values
    */
   map<R>(callbackFn: MapCallback<T, R>): StridedView<R> {
-    return new StridedView<R>([], this.shape).update((_, [x, y]) =>
-      callbackFn.call(this, this.get(x, y)!, [x, y], this)
-    );
+    const view = new StridedView<R>([], this.shape);
+    for (let y = 0; y < this.shape[1]; y++) {
+      for (let x = 0; x < this.shape[0]; x++) {
+        view.set(x, y, callbackFn.call(this, this.get(x, y)!, [x, y], this))
+      }
+    }
+    return view;
   }
 
   /**
