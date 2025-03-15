@@ -734,6 +734,28 @@ export class StridedView<T> {
     return arr.join(rowSep);
   }
 
+  inspect(): string {
+    const colSep: string = ',';
+    const rowSep: string = '\n';
+    const th = 5;
+    const hth = (th / 2) | 0;
+    const arr: string[] = [];
+    for (let y = 0; y < this.shape[1]; y++) {
+      const row: string[] = [];
+      for (let x = 0; x < this.shape[0]; x++) {
+        row.push(String(this.get(x, y)));
+      }
+      if (row.length > th) {
+        row.splice(hth, row.length - th + 1, '...');
+      }
+      arr.push('  [' + row.join(colSep) + ']');
+    }
+    if (arr.length > th) {
+      arr.splice(hth, arr.length - th + 1, '  ...');
+    }
+    return '[\n' + arr.join(rowSep) + '\n]';
+  }
+
   /**
    * @returns - A 2D array representation of the view, detached from the original data
    */

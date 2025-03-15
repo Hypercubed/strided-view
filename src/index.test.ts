@@ -393,6 +393,47 @@ describe('conversion', () => {
   });
 });
 
+describe('inspect', () => {
+  test('inspect', () => {
+    const a = StridedView.range([120, 120]);
+    expect(a.inspect()).toMatchInlineSnapshot(`
+      "[
+        [0,1,...,118,119]
+        [120,121,...,238,239]
+        ...
+        [14160,14161,...,14278,14279]
+        [14280,14281,...,14398,14399]
+      ]"
+    `);
+  });
+
+  test('inspect', () => {
+    const a = StridedView.range([12, 5]);
+    expect(a.inspect()).toMatchInlineSnapshot(`
+      "[
+        [0,1,...,10,11]
+        [12,13,...,22,23]
+        [24,25,...,34,35]
+        [36,37,...,46,47]
+        [48,49,...,58,59]
+      ]"
+    `);
+  });
+
+  test('inspect', () => {
+    const a = StridedView.range([5, 5]);
+    expect(a.inspect()).toMatchInlineSnapshot(`
+      "[
+        [0,1,2,3,4]
+        [5,6,7,8,9]
+        [10,11,12,13,14]
+        [15,16,17,18,19]
+        [20,21,22,23,24]
+      ]"
+    `);
+  });
+});
+
 describe('fill', () => {
   test('fill', () => {
     const a = StridedView.of(A6, [2, 3]);
