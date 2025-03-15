@@ -1,4 +1,4 @@
-import { expect, test, describe, assertType, beforeEach } from 'vitest';
+import { expect, test, describe, assertType, beforeEach, afterEach, vi } from 'vitest';
 import { StridedView } from './index';
 
 let A3: number[];
@@ -21,6 +21,17 @@ let S24: string[];
 let S25: string[];
 let S30: string[];
 let S36: string[];
+
+const mathRandom = Math.random;
+
+// Quick and dirty seeded random number generator
+const seededRandom  = (seed: number) => {
+  let i = seed;
+  return () => {
+    i = (i * 9301 + 49297) % 233280;
+    return i / 233280.0;
+  };
+}
 
 beforeEach(async () => {
   DEADBEEF = 'DEADBEEF'.split('');
@@ -173,25 +184,56 @@ describe('construction', () => {
     `);
   });
 
-  test('random', () => {
-    const a = StridedView.random([2, 3], () => 1);
-    expect(a.toArrays()).toMatchInlineSnapshot(`
-      [
+  describe('random', () => {
+    beforeEach(() => {
+      Math.random = seededRandom(123);
+    });
+  
+    afterEach(() => {
+      Math.random = mathRandom;
+    });
+
+    test('random', () => {
+      const a = StridedView.random([2, 3]);
+      expect(a.toArrays()).toMatchInlineSnapshot(`
         [
-          1,
-          1,
-        ],
+          [
+            0.11539780521262002,
+            0.5263074417009602,
+          ],
+          [
+            0.3968364197530864,
+            0.18686128257887516,
+          ],
+          [
+            0.20811042524005488,
+            0.8463863168724279,
+          ],
+        ]
+      `);
+    });
+  
+    test('random with map', () => {
+      const a = StridedView.random([2, 3], (v) => ~~(6*v+1));
+      expect(a.toArrays()).toMatchInlineSnapshot(`
         [
-          1,
-          1,
-        ],
-        [
-          1,
-          1,
-        ],
-      ]
-    `);
+          [
+            1,
+            4,
+          ],
+          [
+            3,
+            2,
+          ],
+          [
+            2,
+            6,
+          ],
+        ]
+      `);
+    });
   });
+
 
   test('of TypedArray', () => {
     const data = new Int8Array(8);

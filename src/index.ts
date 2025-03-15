@@ -930,17 +930,17 @@ export class StridedView<T> {
 
   /**
    * @param shape - The shape of the view
-   * @param randFn - The random number generator function (Default: Math.random)
+   * @param randFn - Mapping function to generate random values
    * @returns - A view filled with random values
    */
   static random(
     shape: [number, number],
-    randFn?: () => number
+    randFn?: (v: number) => number
   ): StridedView<number> {
     const length = shape[0] * shape[1];
     const data = new Float64Array(length).map(() => Math.random());
     if (randFn) {
-      data.forEach((_, i) => (data[i] = randFn!()));
+      data.forEach((v, i) => (data[i] = randFn!(v)));
     }
     return new StridedView<number>(data, shape);
   }
