@@ -3,6 +3,7 @@ CHANGELOG
 
 ## HEAD (Unreleased)
 * (feature) Add `findNeighborIndices`
+* (feature) Add iterator and entries, values, keys
 
 ---
 

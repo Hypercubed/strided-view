@@ -17,6 +17,10 @@ Parameters:
 - [get](#gear-get)
 - [set](#gear-set)
 - [forEach](#gear-foreach)
+- [__@iterator@19](#gear-__@iterator@19)
+- [entries](#gear-entries)
+- [values](#gear-values)
+- [keys](#gear-keys)
 - [reduce](#gear-reduce)
 - [fill](#gear-fill)
 - [floodFill](#gear-floodfill)
@@ -37,6 +41,7 @@ Parameters:
 - [reverse](#gear-reverse)
 - [rotate90](#gear-rotate90)
 - [neighborhood](#gear-neighborhood)
+- [findNeighborIndices](#gear-findneighborindices)
 - [flat](#gear-flat)
 - [indexOf](#gear-indexof)
 - [includes](#gear-includes)
@@ -97,6 +102,30 @@ Parameters:
 
 * `callbackFn`: - The function to execute on each element
 
+
+#### :gear: __@iterator@19
+
+| Method | Type |
+| ---------- | ---------- |
+| `__@iterator@19` | `() => Generator<T or undefined, void, unknown>` |
+
+#### :gear: entries
+
+| Method | Type |
+| ---------- | ---------- |
+| `entries` | `() => IterableIterator<[T, [number, number]]>` |
+
+#### :gear: values
+
+| Method | Type |
+| ---------- | ---------- |
+| `values` | `() => IterableIterator<T>` |
+
+#### :gear: keys
+
+| Method | Type |
+| ---------- | ---------- |
+| `keys` | `() => IterableIterator<[number, number]>` |
 
 #### :gear: reduce
 
@@ -301,6 +330,12 @@ Parameters:
 * `pos`: - The position of the center of the neighborhood
 * `distance`: - The distance from the center of the neighborhood
 
+
+#### :gear: findNeighborIndices
+
+| Method | Type |
+| ---------- | ---------- |
+| `findNeighborIndices` | `([x, y]: [number, number], topology?: Topology) => [number, number][]` |
 
 #### :gear: flat
 

@@ -198,6 +198,47 @@ export class StridedView<T> {
     }
   }
 
+  *[Symbol.iterator]() {
+    for (let y = 0; y < this.shape[1]; y++) {
+      for (let x = 0; x < this.shape[0]; x++) {
+        yield this.get(x, y);
+      }
+    }
+  }
+
+  /**
+   * @returns - An iterator of the entries of the view
+   */
+  *entries(): IterableIterator<[T, [number, number]]> {
+    for (let y = 0; y < this.shape[1]; y++) {
+      for (let x = 0; x < this.shape[0]; x++) {
+        yield [this.get(x, y)!, [x, y]];
+      }
+    }
+  }
+
+  /**
+   * @returns - An iterator of the values of the view
+   */
+  *values(): IterableIterator<T> {
+    for (let y = 0; y < this.shape[1]; y++) {
+      for (let x = 0; x < this.shape[0]; x++) {
+        yield this.get(x, y)!;
+      }
+    }
+  }
+
+  /**
+   * @returns - An iterator of the keys of the view
+   */
+  *keys(): IterableIterator<[number, number]> {
+    for (let y = 0; y < this.shape[1]; y++) {
+      for (let x = 0; x < this.shape[0]; x++) {
+        yield [x, y];
+      }
+    }
+  }
+
   /**
    * @param callbackFn - The function to execute on each element, returning the new accumulator value
    * @param initialValue - The initial value of the accumulator
