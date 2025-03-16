@@ -42,6 +42,7 @@ Parameters:
 - [rotate90](#gear-rotate90)
 - [neighborhood](#gear-neighborhood)
 - [findNeighborIndices](#gear-findneighborindices)
+- [getNeighbors](#gear-getneighbors)
 - [flat](#gear-flat)
 - [indexOf](#gear-indexof)
 - [includes](#gear-includes)
@@ -70,6 +71,7 @@ Parameters:
 - [random](#gear-random)
 - [empty](#gear-empty)
 - [combine](#gear-combine)
+- [cwise](#gear-cwise)
 - [isStridedView](#gear-isstridedview)
 
 #### :gear: get
@@ -350,6 +352,12 @@ Parameters:
 * `topology`: - The topology of the neighborhood (4 or 8)
 
 
+#### :gear: getNeighbors
+
+| Method | Type |
+| ---------- | ---------- |
+| `getNeighbors` | `([x, y]: [number, number], topology?: Topology) => IterableIterator<[T, [number, number]]>` |
+
 #### :gear: flat
 
 | Method | Type |
@@ -386,7 +394,7 @@ Parameters:
 
 Parameters:
 
-* `callbackFn`: -
+* `callbackFn`: - The function to execute on each element, returning whether to include the element in the result
 
 
 #### :gear: every
@@ -397,7 +405,7 @@ Parameters:
 
 Parameters:
 
-* `callbackFn`: -
+* `callbackFn`: - The function to execute on each element, returning whether to include the element in the result
 
 
 #### :gear: findIndex
@@ -408,7 +416,7 @@ Parameters:
 
 Parameters:
 
-* `callbackFn`: -
+* `callbackFn`: - The function to execute on each element, returning whether to include the element in the result
 
 
 #### :gear: findIndices
@@ -416,6 +424,11 @@ Parameters:
 | Method | Type |
 | ---------- | ---------- |
 | `findIndices` | `(callbackFn?: MapCallback<T, boolean> or undefined) => [number, number][]` |
+
+Parameters:
+
+* `callbackFn`: - The function to execute on each element, returning whether to include the element in the result
+
 
 #### :gear: sample
 
@@ -600,12 +613,12 @@ Parameters:
 
 | Method | Type |
 | ---------- | ---------- |
-| `random` | `(shape: [number, number], randFn?: (() => number) or undefined) => StridedView<number>` |
+| `random` | `(shape: [number, number], randFn?: ((v: number) => number) or undefined) => StridedView<number>` |
 
 Parameters:
 
 * `shape`: - The shape of the view
-* `randFn`: - The random number generator function (Default: Math.random)
+* `randFn`: - Mapping function to generate random values
 
 
 #### :gear: empty
@@ -623,6 +636,19 @@ Parameters:
 Parameters:
 
 * `views`: - The views to combine
+
+
+#### :gear: cwise
+
+| Method | Type |
+| ---------- | ---------- |
+| `cwise` | `<A, B, R>(view1: StridedView<A>, view2: StridedView<B>, callbackFn: (value: A, other: B, pos: [number, number]) => R) => StridedView<R>` |
+
+Parameters:
+
+* `view1`: - The first view to combine elements from
+* `view2`: - The second view to combine elements from
+* `callbackFn`: - The function to execute on each element, returning the new value
 
 
 #### :gear: isStridedView

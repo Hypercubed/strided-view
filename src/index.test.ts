@@ -1,4 +1,11 @@
-import { expect, test, describe, assertType, beforeEach, afterEach, vi } from 'vitest';
+import {
+  expect,
+  test,
+  describe,
+  assertType,
+  beforeEach,
+  afterEach
+} from 'vitest';
 import { StridedView } from './index';
 
 let A3: number[];
@@ -25,13 +32,13 @@ let S36: string[];
 const mathRandom = Math.random;
 
 // Quick and dirty seeded random number generator
-const seededRandom  = (seed: number) => {
+const seededRandom = (seed: number) => {
   let i = seed;
   return () => {
     i = (i * 9301 + 49297) % 233280;
     return i / 233280.0;
   };
-}
+};
 
 beforeEach(async () => {
   DEADBEEF = 'DEADBEEF'.split('');
@@ -188,7 +195,7 @@ describe('construction', () => {
     beforeEach(() => {
       Math.random = seededRandom(123);
     });
-  
+
     afterEach(() => {
       Math.random = mathRandom;
     });
@@ -212,9 +219,9 @@ describe('construction', () => {
         ]
       `);
     });
-  
+
     test('random with map', () => {
-      const a = StridedView.random([2, 3], (v) => ~~(6*v+1));
+      const a = StridedView.random([2, 3], v => ~~(6 * v + 1));
       expect(a.toArrays()).toMatchInlineSnapshot(`
         [
           [
@@ -233,7 +240,6 @@ describe('construction', () => {
       `);
     });
   });
-
 
   test('of TypedArray', () => {
     const data = new Int8Array(8);
@@ -1429,7 +1435,8 @@ test('cwise', () => {
   const a = StridedView.of(A6, [2, 3]);
   const b = StridedView.of(S6, [2, 3]);
 
-  expect(StridedView.cwise(a, b, (x, y) => x + y).toString()).toMatchInlineSnapshot(`
+  expect(StridedView.cwise(a, b, (x, y) => x + y).toString())
+    .toMatchInlineSnapshot(`
     "1A,2B
     3C,4D
     5E,6F"
@@ -1478,8 +1485,12 @@ describe('stress tests', () => {
   });
 
   test('reshape', () => {
-    expect(a.reshape([sy, sx]).toArray()).toEqual(a.copy().reshape([sy, sx]).toArray());
-    expect(a.reshape([sy, sx]).copy().reshape([sx, sy]).toArray()).toEqual(a.toArray());
+    expect(a.reshape([sy, sx]).toArray()).toEqual(
+      a.copy().reshape([sy, sx]).toArray()
+    );
+    expect(a.reshape([sy, sx]).copy().reshape([sx, sy]).toArray()).toEqual(
+      a.toArray()
+    );
 
     expect(a.transpose().reshape([sy, sx]).toArrays()).toEqual(
       a.transpose().copy().reshape([sy, sx]).toArrays()
@@ -1501,6 +1512,8 @@ describe('stress tests', () => {
 
   test('rotate90', () => {
     expect(a.rotate90().toArray()).toEqual(a.copy().rotate90().toArray());
-    expect(a.rotate90().rotate90().rotate90().rotate90().toArray()).toEqual(a.toArray());
+    expect(a.rotate90().rotate90().rotate90().rotate90().toArray()).toEqual(
+      a.toArray()
+    );
   });
 });

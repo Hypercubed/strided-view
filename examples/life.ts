@@ -26,11 +26,10 @@ function print() {
 
 function next() {
   field = field.map((c, [x, y]) => {
-    const neighborhood = field.findNeighborIndices([x, y]);
-    const n = neighborhood.reduce(
-      (acc, [x, y]) => (field.get(x, y) ? acc + 1 : acc),
-      0
-    );
+    let n = 0;
+    for (const [v] of field.getNeighbors([x, y])) {
+      if (v) n++;
+    }
 
     switch (n) {
       case 0:

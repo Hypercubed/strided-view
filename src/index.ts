@@ -559,6 +559,8 @@ export class StridedView<T> {
    * @param pos - The position to find the neighbors of
    * @param topology - The topology of the neighborhood (4 or 8)
    * @returns - The indices of the neighbors
+   *
+   * @deprecated Use `getNeighbors` instead
    */
   findNeighborIndices([x, y]: [number, number], topology: Topology = 8) {
     const neighbors: [number, number][] = [];
@@ -575,6 +577,28 @@ export class StridedView<T> {
       }
     }
     return neighbors;
+  }
+
+  *getNeighbors(
+    [x, y]: [number, number],
+    topology: Topology = 8
+  ): IterableIterator<[T, [number, number]]> {
+    if (y > 0) {
+      if (topology === 8 && x > 0) yield this.entry(x - 1, y - 1);
+      yield this.entry(x, y - 1);
+      if (topology === 8 && x < this.shape[0] - 1)
+        yield this.entry(x + 1, y - 1);
+    }
+
+    if (x > 0) yield this.entry(x - 1, y);
+    if (x < this.shape[0] - 1) yield this.entry(x + 1, y);
+
+    if (y < this.shape[1] - 1) {
+      if (topology === 8 && x > 0) yield this.entry(x - 1, y + 1);
+      yield this.entry(x, y + 1);
+      if (topology === 8 && x < this.shape[0] - 1)
+        yield this.entry(x + 1, y + 1);
+    }
   }
 
   /**
@@ -614,7 +638,7 @@ export class StridedView<T> {
   }
 
   /**
-   * @param callbackFn -
+   * @param callbackFn - The function to execute on each element, returning whether to include the element in the result
    * @returns - Whether at least one element satisfies the condition
    */
   some(callbackFn: MapCallback<T, boolean>): boolean {
@@ -629,7 +653,7 @@ export class StridedView<T> {
   }
 
   /**
-   * @param callbackFn -
+   * @param callbackFn - The function to execute on each element, returning whether to include the element in the result
    * @returns - Whether all elements satisfy the condition
    */
   every(callbackFn: MapCallback<T, boolean>): boolean {
@@ -644,7 +668,7 @@ export class StridedView<T> {
   }
 
   /**
-   * @param callbackFn -
+   * @param callbackFn - The function to execute on each element, returning whether to include the element in the result
    * @returns - The first element that satisfies the condition
    */
   findIndex(callbackFn: MapCallback<T, boolean>): [number, number] {
@@ -659,7 +683,7 @@ export class StridedView<T> {
   }
 
   /**
-   * @param callbackFn
+   * @param callbackFn - The function to execute on each element, returning whether to include the element in the result
    * @returns - The coordinates of all elements that satisfy the condition
    */
   findIndices(callbackFn?: MapCallback<T, boolean>): [number, number][] {
@@ -820,6 +844,10 @@ export class StridedView<T> {
     return arr;
   }
 
+  private entry(x: number, y: number): [T, [number, number]] {
+    return [this.get(x, y)!, [x, y]];
+  }
+
   // TODO:
   // - split
   // - pick/slice (vs col/row)
@@ -897,8 +925,8 @@ export class StridedView<T> {
    */
   static identity(length: number): StridedView<number> {
     const data = new Float64Array(length * length);
-    return new StridedView(data, [length, length]).update(
-      (_, [x, y]) => (x === y ? 1 : 0)
+    return new StridedView(data, [length, length]).update((_, [x, y]) =>
+      x === y ? 1 : 0
     );
   }
 
@@ -909,8 +937,8 @@ export class StridedView<T> {
   static diagonal(array: number[]): StridedView<number> {
     const length = array.length;
     const data = new Float64Array(length * length);
-    return new StridedView(data, [length, length]).update(
-      (_, [x, y]) => (x === y ? array[x] : 0)
+    return new StridedView(data, [length, length]).update((_, [x, y]) =>
+      x === y ? array[x] : 0
     );
   }
 
@@ -986,7 +1014,7 @@ export class StridedView<T> {
   }
 
   /**
-   * 
+   *
    * @param view1 - The first view to combine elements from
    * @param view2 - The second view to combine elements from
    * @param callbackFn - The function to execute on each element, returning the new value
@@ -1008,7 +1036,11 @@ export class StridedView<T> {
     const result = new StridedView<R>(data, view1.shape);
     for (let y = 0; y < view1.shape[1]; y++) {
       for (let x = 0; x < view1.shape[0]; x++) {
-        result.set(x, y, callbackFn(view1.get(x, y)!, view2.get(x, y)!, [x, y]));
+        result.set(
+          x,
+          y,
+          callbackFn(view1.get(x, y)!, view2.get(x, y)!, [x, y])
+        );
       }
     }
     return result;
