@@ -330,6 +330,7 @@ export class StridedView<T> {
    * @param callbackFn - The function to execute on each element, returning the new value
    * @returns - The view with the subview placed at the given position
    */
+  // TODO: Combine with place?
   placeWith<R>(
     sub: StridedView<R>,
     pos: [number, number],
@@ -690,6 +691,7 @@ export class StridedView<T> {
    * @param callbackFn - The function to execute on each element, returning whether to include the element in the sample
    * @returns - The indices of the sampled elements
    */
+  // TODO: Reservoir Sampling??
   sample(k = 1, callbackFn?: MapCallback<T, boolean>) {
     const indecies = this.findIndices(callbackFn);
 
@@ -940,6 +942,8 @@ export class StridedView<T> {
    * @param randFn - Mapping function to generate random values
    * @returns - A view filled with random values
    */
+
+  // TODO: remove randFn
   static random(
     shape: [number, number],
     randFn?: (v: number) => number
