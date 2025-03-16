@@ -41,7 +41,6 @@ Parameters:
 - [reverse](#gear-reverse)
 - [rotate90](#gear-rotate90)
 - [neighborhood](#gear-neighborhood)
-- [findNeighborIndices](#gear-findneighborindices)
 - [getNeighbors](#gear-getneighbors)
 - [flat](#gear-flat)
 - [indexOf](#gear-indexof)
@@ -338,25 +337,17 @@ Parameters:
 * `distance`: - The distance from the center of the neighborhood
 
 
-#### :gear: findNeighborIndices
-
-Find the indices of the neighbors of a given position
+#### :gear: getNeighbors
 
 | Method | Type |
 | ---------- | ---------- |
-| `findNeighborIndices` | `([x, y]: [number, number], topology?: Topology) => [number, number][]` |
+| `getNeighbors` | `([x, y]: [number, number], topology?: Topology) => IterableIterator<[T, [number, number]]>` |
 
 Parameters:
 
 * `pos`: - The position to find the neighbors of
 * `topology`: - The topology of the neighborhood (4 or 8)
 
-
-#### :gear: getNeighbors
-
-| Method | Type |
-| ---------- | ---------- |
-| `getNeighbors` | `([x, y]: [number, number], topology?: Topology) => IterableIterator<[T, [number, number]]>` |
 
 #### :gear: flat
 

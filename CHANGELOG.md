@@ -2,15 +2,13 @@
 
 ## HEAD (Unreleased)
 
-- (feature) Add `findNeighborIndices`
-- (feature) Add iterator, `entries`, `values`, and `keys`
-- (feature) Add `inspect`
-- (feature) Add `combine`
-
-* (feature) Static static constructors now use `Float64Array` when possible
-* (feature) `StridedView.random` now generates random values in the range `[0, 1)` passed to the `fill` function
-* (feature) Add `StridedView.cwise`
-* (feature) Add `neighbors` iterator
+- (feature) Added iterator `Symbol.iterator`, and iterator methods `entries`, `values`, and `keys`
+- (feature) Added `inspect`
+- (feature) Added `StridedView.combine`
+- (feature) Static constructors now use `Float64Array` when possible
+- (feature) `StridedView.random` now generates random values in the range `[0, 1)` passed to the `fill` function
+- (feature) Added `StridedView.cwise`
+- (feature) Added `neighbors` iterator
 
 ---
 

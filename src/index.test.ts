@@ -1151,27 +1151,30 @@ describe('neighborhood', () => {
   });
 });
 
-describe('findNeighborIndices', () => {
-  test('findNeighborIndices', () => {
-    const a = StridedView.of([], [5, 5]);
-    const b = a.findNeighborIndices([1, 1]);
-    expect(JSON.stringify(b)).toMatchInlineSnapshot(
-      `"[[0,1],[2,1],[1,0],[1,2],[0,0],[2,0],[0,2],[2,2]]"`
-    );
+describe('getNeighbors', () => {
+  test('getNeighbors', () => {
+    const a = StridedView.of(A25, [5, 5]);
+    const b = a.getNeighbors([1, 1]);
+    expect(JSON.stringify([...b])).toMatchInlineSnapshot(`"[[1,[0,0]],[2,[1,0]],[3,[2,0]],[6,[0,1]],[8,[2,1]],[11,[0,2]],[12,[1,2]],[13,[2,2]]]"`);
   });
 
-  test('findNeighborIndices with topology', () => {
-    const a = StridedView.of([], [5, 5]);
-    const b = a.findNeighborIndices([1, 1], 4);
-    expect(JSON.stringify(b)).toMatchInlineSnapshot(
-      `"[[0,1],[2,1],[1,0],[1,2]]"`
-    );
+  test('getNeighbors with topology', () => {
+    const a = StridedView.of(A25, [5, 5]);
+    const b = a.getNeighbors([1, 1], 4);
+    expect(JSON.stringify([...b])).toMatchInlineSnapshot(`"[[2,[1,0]],[6,[0,1]],[8,[2,1]],[12,[1,2]]]"`);
   });
 
-  test('findNeighborIndices near edge', () => {
-    const a = StridedView.of([], [5, 5]);
-    const b = a.findNeighborIndices([0, 5]);
-    expect(JSON.stringify(b)).toMatchInlineSnapshot(`"[[1,5],[0,4],[1,4]]"`);
+  test('getNeighbors near edge', () => {
+    const a = StridedView.of(A25, [5, 5]);
+    expect(a.toString()).toMatchInlineSnapshot(`
+      "1,2,3,4,5
+      6,7,8,9,10
+      11,12,13,14,15
+      16,17,18,19,20
+      21,22,23,24,25"
+    `);
+    const b = a.getNeighbors([0, 4]);
+    expect(JSON.stringify([...b])).toMatchInlineSnapshot(`"[[16,[0,3]],[17,[1,3]],[22,[1,4]]]"`);
   });
 });
 

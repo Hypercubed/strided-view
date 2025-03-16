@@ -275,6 +275,7 @@ export class StridedView<T> {
     topology: Topology = 4,
     predicate?: (target: T, current: T) => boolean
   ): this {
+    // TODO: Validate position
     const target = this.get(...pos);
     const queue = [pos];
     while (queue.length > 0) {
@@ -284,7 +285,9 @@ export class StridedView<T> {
       const r = predicate ? predicate(target!, current!) : current === target;
       if (r) {
         this.#set(idx, value);
-        queue.push(...this.findNeighborIndices(p, topology));
+        for (const [, pos] of this.getNeighbors(p, topology)) {
+          queue.push(pos);
+        }
       }
     }
     return this;
@@ -554,35 +557,15 @@ export class StridedView<T> {
   }
 
   /**
-   * Find the indices of the neighbors of a given position
-   *
-   * @param pos - The position to find the neighbors of
+   * @param pos - The position to find the neighbors of 
    * @param topology - The topology of the neighborhood (4 or 8)
-   * @returns - The indices of the neighbors
-   *
-   * @deprecated Use `getNeighbors` instead
+   * @returns - An iterator of the neighbors
    */
-  findNeighborIndices([x, y]: [number, number], topology: Topology = 8) {
-    const neighbors: [number, number][] = [];
-    if (x > 0) neighbors.push([x - 1, y]);
-    if (x < this.shape[0] - 1) neighbors.push([x + 1, y]);
-    if (y > 0) neighbors.push([x, y - 1]);
-    if (y < this.shape[1] - 1) neighbors.push([x, y + 1]);
-    if (topology === 8) {
-      if (x > 0 && y > 0) neighbors.push([x - 1, y - 1]);
-      if (x < this.shape[0] - 1 && y > 0) neighbors.push([x + 1, y - 1]);
-      if (x > 0 && y < this.shape[1] - 1) neighbors.push([x - 1, y + 1]);
-      if (x < this.shape[0] - 1 && y < this.shape[1] - 1) {
-        neighbors.push([x + 1, y + 1]);
-      }
-    }
-    return neighbors;
-  }
-
   *getNeighbors(
     [x, y]: [number, number],
     topology: Topology = 8
   ): IterableIterator<[T, [number, number]]> {
+    // TODO: Validate position
     if (y > 0) {
       if (topology === 8 && x > 0) yield this.entry(x - 1, y - 1);
       yield this.entry(x, y - 1);
