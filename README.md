@@ -59,29 +59,53 @@ view.forEach((value, [x, y]) => {
 // view[1, 4] = 10
 ```
 
-You can also create new views of the array using the `transpose`, `lo`, `hi`, etc. These methods allow you to create views of the array in constant time. Again, any changes you make to the view will be reflected in the underlying data array.
+You can create new views of the array using the `slice`, `lo`, `hi`, etc. These methods allow you to create views of the array in constant time. Again, any changes you make to data via the view will be reflected in the underlying data array.
 
 ```typescript
 const data = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 const view = StridedView.of(data, [2, 5]);
 
-const transposed = view.transpose();
 const lo = view.lo([1, 2]);
 const hi = view.hi([1, 2]);
 ```
 
-You can also inspect or output the array using the `toString`, `toArrays`, and `toArray` methods.
+![lo-hi](./images/slices.png)
+
+You can create projections of the array using the `transpose`, `flip`, `rotate90` methods.
+
+```typescript
+const data = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+const view = StridedView.of(data, [2, 5]);
+
+const transpose = view.transpose();
+const flip = view.flip();
+const rotate90 = view.rotate90();
+```
+
+![lo-hi](./images/projections.png)
+
+You can inspect or output the array using the `toString`, `join`, `inspect`, `toArrays`, and `toArray` methods.
 
 ```typescript
 const data = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 const view = StridedView.from(data, [2, 5]);
 
-console.log(view.flip().toString());
-// 2,1
-// 4,3
-// 6,5
-// 8,7
-// 10,9
+console.log(view.toString());
+// 1,2
+// 3,4
+// 5,6
+// 7,8
+// 9,10
+
+console.log(view.toArrays());
+// [ [ 1, 2 ], [ 3, 4 ], [ 5, 6 ], [ 7, 8 ], [ 9, 10 ] ]
+
+console.log(view.join(''));
+// 12
+// 34
+// 56
+// 78
+// 910
 ```
 
 To create a new StridedView not backed by the original data array, you can use the `copy` or `map` methods.

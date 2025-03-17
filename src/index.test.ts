@@ -221,7 +221,7 @@ describe('construction', () => {
     });
 
     test('random with map', () => {
-      const a = StridedView.random([2, 3], v => ~~(6 * v + 1));
+      const a = StridedView.random([2, 3]).map(v => ~~(6 * v + 1));
       expect(a.toArrays()).toMatchInlineSnapshot(`
         [
           [
@@ -782,7 +782,6 @@ describe('hi/lo/slice', () => {
       D,E,F
       G,H,I"
     `);
-    a.hi([2, 3]);
     expect(a.hi([2, 3]).toString()).toMatchInlineSnapshot(`
       "A,B
       D,E
@@ -1519,4 +1518,54 @@ describe('stress tests', () => {
       a.toArray()
     );
   });
+});
+
+test('image', () => {
+  const a = StridedView.empty([10, 10]).update((_, [x, y]) =>`[${x},${y}]`);
+  expect(a.inspect()).toMatchInlineSnapshot(`
+    "[
+      [[0,0],[1,0],...,[8,0],[9,0]]
+      [[0,1],[1,1],...,[8,1],[9,1]]
+      ...
+      [[0,8],[1,8],...,[8,8],[9,8]]
+      [[0,9],[1,9],...,[8,9],[9,9]]
+    ]"
+  `);
+
+  expect(a.hi([2,4]).inspect()).toMatchInlineSnapshot(`
+    "[
+      [[0,0],[1,0]]
+      [[0,1],[1,1]]
+      [[0,2],[1,2]]
+      [[0,3],[1,3]]
+    ]"
+  `);
+  expect(a.lo([7,8]).inspect()).toMatchInlineSnapshot(`
+    "[
+      [[7,8],[8,8],[9,8]]
+      [[7,9],[8,9],[9,9]]
+    ]"
+  `);
+
+  expect(a.row(6).inspect()).toMatchInlineSnapshot(`
+    "[
+      [[0,6],[1,6],...,[8,6],[9,6]]
+    ]"
+  `);
+  expect(a.col(4).inspect()).toMatchInlineSnapshot(`
+    "[
+      [[4,0]]
+      [[4,1]]
+      ...
+      [[4,8]]
+      [[4,9]]
+    ]"
+  `);
+
+  expect(a.slice([6,2], [3,2]).inspect()).toMatchInlineSnapshot(`
+    "[
+      [[6,2],[7,2],[8,2]]
+      [[6,3],[7,3],[8,3]]
+    ]"
+  `);
 });
