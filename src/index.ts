@@ -939,20 +939,11 @@ export class StridedView<T> {
 
   /**
    * @param shape - The shape of the view
-   * @param randFn - Mapping function to generate random values
    * @returns - A view filled with random values
    */
-
-  // TODO: remove randFn
-  static random(
-    shape: [number, number],
-    randFn?: (v: number) => number
-  ): StridedView<number> {
+  static random(shape: [number, number]): StridedView<number> {
     const length = shape[0] * shape[1];
     const data = new Float64Array(length).map(() => Math.random());
-    if (randFn) {
-      data.forEach((v, i) => (data[i] = randFn!(v)));
-    }
     return new StridedView<number>(data, shape);
   }
 
@@ -1007,7 +998,7 @@ export class StridedView<T> {
    * @param callbackFn - The function to execute on each element, returning the new value
    * @returns - A new view with the combined values
    */
-  static cwise<A, B, R>(
+  static zipWith<A, B, R>(
     view1: StridedView<A>,
     view2: StridedView<B>,
     callbackFn: (value: A, other: B, pos: [number, number]) => R

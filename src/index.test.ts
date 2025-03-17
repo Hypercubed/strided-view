@@ -1434,11 +1434,11 @@ describe('combine', () => {
   });
 });
 
-test('cwise', () => {
+test('zipWith', () => {
   const a = StridedView.of(A6, [2, 3]);
   const b = StridedView.of(S6, [2, 3]);
 
-  expect(StridedView.cwise(a, b, (x, y) => x + y).toString())
+  expect(StridedView.zipWith(a, b, (x, y) => x + y).toString())
     .toMatchInlineSnapshot(`
     "1A,2B
     3C,4D

@@ -25,7 +25,7 @@ Parameters:
 - [random](#gear-random)
 - [empty](#gear-empty)
 - [combine](#gear-combine)
-- [cwise](#gear-cwise)
+- [zipWith](#gear-zipwith)
 - [isStridedView](#gear-isstridedview)
 
 #### :gear: of
@@ -124,12 +124,11 @@ Parameters:
 
 | Method | Type |
 | ---------- | ---------- |
-| `random` | `(shape: [number, number], randFn?: ((v: number) => number) or undefined) => StridedView<number>` |
+| `random` | `(shape: [number, number]) => StridedView<number>` |
 
 Parameters:
 
 * `shape`: - The shape of the view
-* `randFn`: - Mapping function to generate random values
 
 
 #### :gear: empty
@@ -149,11 +148,11 @@ Parameters:
 * `views`: - The views to combine
 
 
-#### :gear: cwise
+#### :gear: zipWith
 
 | Method | Type |
 | ---------- | ---------- |
-| `cwise` | `<A, B, R>(view1: StridedView<A>, view2: StridedView<B>, callbackFn: (value: A, other: B, pos: [number, number]) => R) => StridedView<R>` |
+| `zipWith` | `<A, B, R>(view1: StridedView<A>, view2: StridedView<B>, callbackFn: (value: A, other: B, pos: [number, number]) => R) => StridedView<R>` |
 
 Parameters:
 
