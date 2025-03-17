@@ -12,6 +12,167 @@ Parameters:
 * `offset`: - The offset of the array (Default: `0`)
 
 
+### Static Methods
+
+- [of](#gear-of)
+- [from](#gear-from)
+- [range](#gear-range)
+- [zeros](#gear-zeros)
+- [ones](#gear-ones)
+- [identity](#gear-identity)
+- [diagonal](#gear-diagonal)
+- [fill](#gear-fill)
+- [random](#gear-random)
+- [empty](#gear-empty)
+- [combine](#gear-combine)
+- [cwise](#gear-cwise)
+- [isStridedView](#gear-isstridedview)
+
+#### :gear: of
+
+| Method | Type |
+| ---------- | ---------- |
+| `of` | `<T>(array: Data<T>, shape?: [number, number] or undefined) => StridedView<T>` |
+
+Parameters:
+
+* `array`: - The underlying 1D storage for the multidimensional array
+* `shape`: - The shape of the view
+
+
+#### :gear: from
+
+| Method | Type |
+| ---------- | ---------- |
+| `from` | `<T>(array: T[][]) => StridedView<T>` |
+
+Parameters:
+
+* `array`: - A 2D array to create a view from
+
+
+#### :gear: range
+
+| Method | Type |
+| ---------- | ---------- |
+| `range` | `(shape: [number, number], start?: number, step?: number) => StridedView<number>` |
+
+Parameters:
+
+* `shape`: - The shape of the range
+* `start`: - The starting value of the range (Default: 0)
+* `step`: - The step between values in the range (Default: 1)
+
+
+#### :gear: zeros
+
+| Method | Type |
+| ---------- | ---------- |
+| `zeros` | `(shape: [number, number]) => StridedView<number>` |
+
+Parameters:
+
+* `shape`: - The shape of the array
+
+
+#### :gear: ones
+
+| Method | Type |
+| ---------- | ---------- |
+| `ones` | `(shape: [number, number]) => StridedView<number>` |
+
+Parameters:
+
+* `shape`: - The shape of the array
+
+
+#### :gear: identity
+
+| Method | Type |
+| ---------- | ---------- |
+| `identity` | `(length: number) => StridedView<number>` |
+
+Parameters:
+
+* `length`: - The length of the identity matrix
+
+
+#### :gear: diagonal
+
+| Method | Type |
+| ---------- | ---------- |
+| `diagonal` | `(array: number[]) => StridedView<number>` |
+
+Parameters:
+
+* `array`: - The array to create a diagonal matrix from (i.e. the diagonal values)
+
+
+#### :gear: fill
+
+| Method | Type |
+| ---------- | ---------- |
+| `fill` | `<T>(shape: [number, number], value: T) => StridedView<T>` |
+
+Parameters:
+
+* `shape`: - The shape of the view
+* `value`: - The value to fill the array with
+
+
+#### :gear: random
+
+| Method | Type |
+| ---------- | ---------- |
+| `random` | `(shape: [number, number], randFn?: ((v: number) => number) or undefined) => StridedView<number>` |
+
+Parameters:
+
+* `shape`: - The shape of the view
+* `randFn`: - Mapping function to generate random values
+
+
+#### :gear: empty
+
+| Method | Type |
+| ---------- | ---------- |
+| `empty` | `<T>(shape: [number, number]) => StridedView<T>` |
+
+#### :gear: combine
+
+| Method | Type |
+| ---------- | ---------- |
+| `combine` | `<T>(views: StridedView<T>[][]) => StridedView<T>` |
+
+Parameters:
+
+* `views`: - The views to combine
+
+
+#### :gear: cwise
+
+| Method | Type |
+| ---------- | ---------- |
+| `cwise` | `<A, B, R>(view1: StridedView<A>, view2: StridedView<B>, callbackFn: (value: A, other: B, pos: [number, number]) => R) => StridedView<R>` |
+
+Parameters:
+
+* `view1`: - The first view to combine elements from
+* `view2`: - The second view to combine elements from
+* `callbackFn`: - The function to execute on each element, returning the new value
+
+
+#### :gear: isStridedView
+
+| Method | Type |
+| ---------- | ---------- |
+| `isStridedView` | `<T>(obj: any) => obj is StridedView<T>` |
+
+Parameters:
+
+* `obj`: - The object to check
+
+
 ### Methods
 
 - [get](#gear-get)
@@ -59,19 +220,6 @@ Parameters:
 - [inspect](#gear-inspect)
 - [toArrays](#gear-toarrays)
 - [toArray](#gear-toarray)
-- [of](#gear-of)
-- [from](#gear-from)
-- [range](#gear-range)
-- [zeros](#gear-zeros)
-- [ones](#gear-ones)
-- [identity](#gear-identity)
-- [diagonal](#gear-diagonal)
-- [fill](#gear-fill)
-- [random](#gear-random)
-- [empty](#gear-empty)
-- [combine](#gear-combine)
-- [cwise](#gear-cwise)
-- [isStridedView](#gear-isstridedview)
 
 #### :gear: get
 
@@ -507,151 +655,6 @@ Parameters:
 | Method | Type |
 | ---------- | ---------- |
 | `toArray` | `() => T[]` |
-
-#### :gear: of
-
-| Method | Type |
-| ---------- | ---------- |
-| `of` | `<T>(array: Data<T>, shape?: [number, number] or undefined) => StridedView<T>` |
-
-Parameters:
-
-* `array`: - The underlying 1D storage for the multidimensional array
-* `shape`: - The shape of the view
-
-
-#### :gear: from
-
-| Method | Type |
-| ---------- | ---------- |
-| `from` | `<T>(array: T[][]) => StridedView<T>` |
-
-Parameters:
-
-* `array`: - A 2D array to create a view from
-
-
-#### :gear: range
-
-| Method | Type |
-| ---------- | ---------- |
-| `range` | `(shape: [number, number], start?: number, step?: number) => StridedView<number>` |
-
-Parameters:
-
-* `shape`: - The shape of the range
-* `start`: - The starting value of the range (Default: 0)
-* `step`: - The step between values in the range (Default: 1)
-
-
-#### :gear: zeros
-
-| Method | Type |
-| ---------- | ---------- |
-| `zeros` | `(shape: [number, number]) => StridedView<number>` |
-
-Parameters:
-
-* `shape`: - The shape of the array
-
-
-#### :gear: ones
-
-| Method | Type |
-| ---------- | ---------- |
-| `ones` | `(shape: [number, number]) => StridedView<number>` |
-
-Parameters:
-
-* `shape`: - The shape of the array
-
-
-#### :gear: identity
-
-| Method | Type |
-| ---------- | ---------- |
-| `identity` | `(length: number) => StridedView<number>` |
-
-Parameters:
-
-* `length`: - The length of the identity matrix
-
-
-#### :gear: diagonal
-
-| Method | Type |
-| ---------- | ---------- |
-| `diagonal` | `(array: number[]) => StridedView<number>` |
-
-Parameters:
-
-* `array`: - The array to create a diagonal matrix from (i.e. the diagonal values)
-
-
-#### :gear: fill
-
-| Method | Type |
-| ---------- | ---------- |
-| `fill` | `<T>(shape: [number, number], value: T) => StridedView<T>` |
-
-Parameters:
-
-* `shape`: - The shape of the view
-* `value`: - The value to fill the array with
-
-
-#### :gear: random
-
-| Method | Type |
-| ---------- | ---------- |
-| `random` | `(shape: [number, number], randFn?: ((v: number) => number) or undefined) => StridedView<number>` |
-
-Parameters:
-
-* `shape`: - The shape of the view
-* `randFn`: - Mapping function to generate random values
-
-
-#### :gear: empty
-
-| Method | Type |
-| ---------- | ---------- |
-| `empty` | `<T>(shape: [number, number]) => StridedView<T>` |
-
-#### :gear: combine
-
-| Method | Type |
-| ---------- | ---------- |
-| `combine` | `<T>(views: StridedView<T>[][]) => StridedView<T>` |
-
-Parameters:
-
-* `views`: - The views to combine
-
-
-#### :gear: cwise
-
-| Method | Type |
-| ---------- | ---------- |
-| `cwise` | `<A, B, R>(view1: StridedView<A>, view2: StridedView<B>, callbackFn: (value: A, other: B, pos: [number, number]) => R) => StridedView<R>` |
-
-Parameters:
-
-* `view1`: - The first view to combine elements from
-* `view2`: - The second view to combine elements from
-* `callbackFn`: - The function to execute on each element, returning the new value
-
-
-#### :gear: isStridedView
-
-| Method | Type |
-| ---------- | ---------- |
-| `isStridedView` | `<T>(obj: any) => obj is StridedView<T>` |
-
-Parameters:
-
-* `obj`: - The object to check
-
 
 ### Properties
 
