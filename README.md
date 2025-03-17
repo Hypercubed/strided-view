@@ -82,7 +82,7 @@ const flip = view.flip();
 const rotate90 = view.rotate90();
 ```
 
-![lo-hi](./images/projections.png)
+![transformations](./images/transformations.png)
 
 You can inspect or output the array using the `toString`, `join`, `inspect`, `toArrays`, and `toArray` methods.
 
